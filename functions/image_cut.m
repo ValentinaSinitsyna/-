@@ -7,13 +7,15 @@ while ~isempty([x,y])
     image = fill_sample(image,x,y);
     new_sample = cut_sample(image);
     image(image==2) = 0;
-    samples{end+1} = new_sample; 
+    if sum(new_sample(:))>200
+        samples{end+1} = new_sample; 
+    end
+   
     %samples = cat(3,samples,new_sample);
     [x,y] = find(image == 1,1,'first');
 end 
 
 end
-
 
 function [image] = fill_sample(image, x, y)
 sizes = size(image);
