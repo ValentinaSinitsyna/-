@@ -7,7 +7,7 @@ while ~isempty([x,y])
     image = fill_sample(image,x,y);
     new_sample = cut_sample(image);
     image(image==2) = 0;
-    if sum(new_sample(:))>200
+    if sum(new_sample(:))>2000
         samples{end+1} = new_sample; 
     end
    
