@@ -7,21 +7,20 @@ while ~isempty([x,y])
     image = fill_sample(image,x,y);
     new_sample = cut_sample(image);
     image(image==2) = 0;
-    if sum(new_sample(:))>2000
-        samples{end+1} = new_sample; 
+    if sum(new_sample(:))>3000
+    samples{end+1} = new_sample;
     end
-   
-    %samples = cat(3,samples,new_sample);
     [x,y] = find(image == 1,1,'first');
 end 
 
 end
 
+
 function [image] = fill_sample(image, x, y)
 sizes = size(image);
 width = sizes(1);
 height = sizes(2);
- image(x,y) = 2;
+image(x,y) = 2;
         if  y < height && image(x,y+1)==1 
             image(x,y+1) = 2;
             image = fill_sample(image,x,y+1);
@@ -58,6 +57,7 @@ for i=min(x_array):max(x_array)
         end
     end
 end
+
 end
 
 
