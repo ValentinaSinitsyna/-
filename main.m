@@ -1,10 +1,10 @@
 %% block 1 - cutting images
 clc
 clear
-image_ful= imread('resources/135320_allgrains.png');
-image_full= image_ful(500:1500,2000:4164);
+image_full= imread('resources/135320_allgrains.png');
+%image_full= image_full(500:1000,2000:2464);
 samples  = image_cut(image_full);
-% block 2 - examples for using my functions and code for saving samples to
+%% block 2 - examples for using my functions and code for saving samples to
 % files
 for i=1:size(samples,2)
   extention_samples{i}=extention_sample(samples{i},10);

@@ -1,20 +1,30 @@
+
 function [samples] = image_cut(image)
+
 samples = {};
 image = uint8(image);
+%image = delete_border_samples(image);
 [x,y] = find(image == 1,1,'first');
 
 while ~isempty([x,y])
+    
     image = fill_sample(image,x,y);
     new_sample = cut_sample(image);
+
     image(image==2) = 0;
     if sum(new_sample(:))>3000
-    samples{end+1} = new_sample;
+        samples{end+1} = new_sample;
     end
+    
+   
     [x,y] = find(image == 1,1,'first');
 end 
 
 end
 
+
+
+ 
 
 function [image] = fill_sample(image, x, y)
 sizes = size(image);
@@ -41,24 +51,37 @@ image(x,y) = 2;
 end
 
 function [sample] = cut_sample(image)
+sizes = size(image);
+image_width = sizes(1);
+image_height = sizes(2);
+sample = zeros(1,1);
 [x_array, y_array] = find(image==2);
-width = max(x_array) - min(x_array) + 1;
-height = max(y_array) - min(y_array) + 1;
+ width = max(x_array) - min(x_array) + 1;
+ height = max(y_array) - min(y_array) + 1;
 
-x_start = min(x_array) - 1;
-y_start = min(y_array) - 1;
+if ~is_border(x_array,y_array,image_width,image_height,width, height,0.2)
 
-sample = zeros(width,height);
+   
+    x_start = min(x_array) - 1;
+    y_start = min(y_array) - 1;
 
-for i=min(x_array):max(x_array)
-    for j=min(y_array):max(y_array)
-        if image(i,j)==2
-            sample( i - x_start,j - y_start) = 1;
+    sample = zeros(width,height);
+
+    for i=min(x_array):max(x_array)
+        for j=min(y_array):max(y_array)
+            if image(i,j)==2
+                sample( i - x_start,j - y_start) = 1;
+            end
         end
     end
 end
-
 end
 
 
- 
+    function [answer]  = is_border(x_array,y_array,image_width,image_height,width, height, percent)
+       answer = false; 
+      
+       if sum(x_array==1)/width > percent || sum(x_array==image_height)/width > percent || sum(y_array==1)/height > percent || sum(x_array==image_width)/height > percent
+           answer = true;
+       end
+    end
