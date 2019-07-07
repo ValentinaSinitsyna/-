@@ -1,6 +1,7 @@
 
-function [samples] = image_cut(image)
-
+function [samples] = image_cut(input_image)
+global image;
+image = input_image;
 samples = {};
 image = uint8(image);
 %image = delete_border_samples(image);
@@ -8,8 +9,8 @@ image = uint8(image);
 
 while ~isempty([x,y])
     
-    image = fill_sample(image,x,y);
-    new_sample = cut_sample(image);
+    fill_sample(x,y);
+    new_sample = cut_sample();
 
     image(image==2) = 0;
     if sum(new_sample(:))>3000
@@ -26,31 +27,33 @@ end
 
  
 
-function [image] = fill_sample(image, x, y)
+function [] = fill_sample(x, y)
+global image;
 sizes = size(image);
 width = sizes(1);
 height = sizes(2);
 image(x,y) = 2;
         if  y < height && image(x,y+1)==1 
             image(x,y+1) = 2;
-            image = fill_sample(image,x,y+1);
+            fill_sample(x,y+1);
         end
         if  y > 1 && image(x,y-1)==1
             image(x,y-1) = 2;
-            image = fill_sample(image,x,y-1);
+            fill_sample(x,y-1);
         end
         if x < width && image(x+1,y)==1   
             image(x+1,y) = 2;
-            image = fill_sample(image,x+1,y);
+            fill_sample(x+1,y);
         end
         if x > 1 && image(x-1,y)==1  
             image(x-1,y) = 2;
-            image = fill_sample(image,x-1,y);
+            fill_sample(x-1,y);
         end         
 
 end
 
-function [sample] = cut_sample(image)
+function [sample] = cut_sample()
+global image;
 sizes = size(image);
 image_width = sizes(1);
 image_height = sizes(2);
