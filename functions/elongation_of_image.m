@@ -1,7 +1,9 @@
-function [k] = elongation_of_image (image);
+function [k,aa, bb] = elongation_of_image (image);
 d = regionprops(image, 'Orientation');
-degree = struct2array(d);
+degree= struct2array(d);
+figure, bb=imshow(image);
 new_image = imrotate(image,degree, 'bilinear');
+figure, aa=imshow(new_image);
 I=size(image,1);
 J=size(image,2);
 length_i=0;
