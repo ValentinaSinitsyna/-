@@ -1,9 +1,15 @@
 %% block 1 - cutting images
 clc
 clear
-image_full= imread('resources/135320_allgrains.png');
-%image_full= image_full(500:1000,2000:2464);
-samples  = image_cut(image_full);
+I= imread('resources/135320_allgrains.png'); 
+BW1=bwmorph(I, 'erode', 5); 
+image_full= BW1(1:1000,1:500);
+samples = image_cut(image_full);
+for i=1:size(samples,2)
+ extention_samples{i}=extention_sample(samples{i},10);
+ smoothing_samples{i} = smoothing_filter(extention_samples{i});
+ elongation(i)=elongation_of_image(smoothing_samples{i});
+end
 %% block 2 - examples for using my functions and code for saving samples to
 % files
 for i=1:size(samples,2)
