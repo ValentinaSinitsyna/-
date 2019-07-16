@@ -1,15 +1,16 @@
 
 function [samples] = image_cut(input_image)
 global image;
+global recursion_depth;
+recursion_depth = 1;
 image = input_image;
 samples = {};
 image = uint8(image);
-%image = delete_border_samples(image);
 [x,y] = find(image == 1,1,'first');
 
 while ~isempty([x,y])
     
-    fill_sample(x,y);
+    fill_sample(x,y,1);
     new_sample = cut_sample();
 
     image(image==2) = 0;
@@ -27,7 +28,14 @@ end
 
  
 
-function [] = fill_sample(x, y)
+function [] = fill_sample(x, y,recursion_depth)
+global recursion_limit;
+%global recursion_depth;
+if recursion_depth<recursion_limit
+      
+rd = recursion_depth;
+%recursion_depth = recursion_depth+1; 
+%sprintf('depth=%d x=%d y=%d',rd,x,y)
 global image;
 sizes = size(image);
 width = sizes(1);
@@ -35,21 +43,21 @@ height = sizes(2);
 image(x,y) = 2;
         if  y < height && image(x,y+1)==1 
             image(x,y+1) = 2;
-            fill_sample(x,y+1);
+            fill_sample(x,y+1,rd+1);
         end
         if  y > 1 && image(x,y-1)==1
             image(x,y-1) = 2;
-            fill_sample(x,y-1);
+            fill_sample(x,y-1,rd+1);
         end
         if x < width && image(x+1,y)==1   
             image(x+1,y) = 2;
-            fill_sample(x+1,y);
+            fill_sample(x+1,y,rd+1);
         end
         if x > 1 && image(x-1,y)==1  
             image(x-1,y) = 2;
-            fill_sample(x-1,y);
+            fill_sample(x-1,y,rd+1);
         end         
-
+end
 end
 
 function [sample] = cut_sample()
