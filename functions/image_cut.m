@@ -1,4 +1,4 @@
-
+%cutting images
 function [samples] = image_cut(input_image)
 global image;
 image = input_image;
