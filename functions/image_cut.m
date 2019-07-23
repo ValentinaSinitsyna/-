@@ -17,6 +17,8 @@ while ~isempty([x,y])
     new_sample = cut_sample();
 
     image(image==3) = 0;
+    image(image==2) = 0;
+    
     if sum(new_sample(:))>3000
         samples{end+1} = new_sample;
     end
