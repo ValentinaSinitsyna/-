@@ -19,7 +19,7 @@ while ~isempty([x,y])
     image(image==3) = 0;
     image(image==2) = 0;
     
-    if sum(new_sample(:))>3000
+    if sum(new_sample(:))>1500
         samples{end+1} = new_sample;
     end
     
