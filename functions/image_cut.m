@@ -25,7 +25,7 @@ while ~isempty([x,y])
     
    
     %[x,y] = find(image == 1,1,'first');
-    [x,y] = find_first(x,y,1);
+    [x,y] = find(image==1, 1, 'first'); 
 end 
 
 end
@@ -54,27 +54,28 @@ while ~isempty([x,y])
             image(x-1,y) = 2;
         end  
         image(x,y) = 3;
-        [x,y] = find_first(x,y,2);        
+        [x,y] = find(image==2, 1, 'first');         
 end
 end
 
 function [x,y] = find_first(x_old,y_old,num)
 global image;
-global width;  
-global height; 
-for i=x_old:width
-    for j=1:height
-       if image(i,j)==num
-          x=i; 
-          y=j;
-          return;
-       end
-    end
-end
+% global width;  
+% global height; 
+% for i=x_old:width
+%     for j=1:height
+%        if image(i,j)==num
+%           x=i; 
+%           y=j;
+%           return;
+%        end
+%     end
+% end
+% 
+% x=[];
+% y=[];
 
-x=[];
-y=[];
-
+[x,y] = find(image==num, 1, 'first'); 
 end
 
 function [sample] = cut_sample()
@@ -109,7 +110,7 @@ end
     function [answer]  = is_border(x_array,y_array,image_width,image_height,width, height, percent)
        answer = false; 
       
-       if sum(x_array==1)/width > percent || sum(x_array==image_height)/width > percent || sum(y_array==1)/height > percent || sum(x_array==image_width)/height > percent
+       if (sum(x_array==1)/width > percent) || (sum(x_array==image_height)/width > percent) || (sum(y_array==1)/height > percent) || (sum(y_array==image_width)/height > percent)
            answer = true;
        end
     end
